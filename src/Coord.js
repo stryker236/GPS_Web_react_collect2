@@ -77,6 +77,15 @@ function Coord (){
         //aqui deve chamar uma função para apanhar
     }
 
+    function TripInfo() {
+        console.log("Lista no trip info",lista);
+        let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
+        return data
+        return <div>ponto</div>
+        return <Button variant='contained' color="primary" onClick={Endtrip}>Enceradsadsarar trip</Button>
+    }
+
+
     function RenderButton() {
         if(colleting === false){
             return <Button variant='contained' color="primary" onClick={BeginTrip}>Iniciar Viagem</Button>
@@ -84,9 +93,9 @@ function Coord (){
         else{
             return <Button variant='contained' color="primary" onClick={Endtrip}>Encerrar trip</Button>
         }
-            
-
     }
+
+
 
     return(
         <div>
@@ -110,7 +119,7 @@ function Coord (){
             </div>
             <RenderButton />
             <p/>
-            {lista}
+            <TripInfo/>
         </div>
         );
 }

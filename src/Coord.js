@@ -18,7 +18,7 @@ function Coord (){
     const [latitude,setLatitude] = useState(null)
     const [longitude,setLongitude] = useState(null)
     const [speed,setSpeed] = useState(null)
-    const [time,setTime] = useState(null)
+    // const [time,setTime] = useState(null)
     
     console.log("info")
     console.log("WatchID",watchID)

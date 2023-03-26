@@ -81,8 +81,6 @@ function Coord (){
         console.log("Lista no trip info",lista);
         let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
         return data
-        return <div>ponto</div>
-        return <Button variant='contained' color="primary" onClick={Endtrip}>Enceradsadsarar trip</Button>
     }
 
 

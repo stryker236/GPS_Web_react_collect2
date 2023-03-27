@@ -1,9 +1,9 @@
 import {useState} from "react";
 import { Button } from "@mui/material";
 
-
 var ListWithTheUserTrip = []
 var DeviceID = CheckUserID()
+var wakeLock = null
 //TODO: Mostrar na app os valores que estão a ser lidos  (done)
 //TODO: Ver como obter um identificador universal(UUID) (done)
 //TODO: Ver como guardar UUID no storage interno (done)
@@ -60,7 +60,8 @@ function Coord (){
         // console.log("diatancia calculada: ", d);
         return d
     }
-    function BeginTrip() {
+    async function BeginTrip() {
+        wakeLock = await navigator.wakeLock.request("screen");
         setCollecting(true)
         // console.log("Teste watch",watchID);
         
@@ -103,7 +104,13 @@ function Coord (){
                 else{
                     ListWithTheUserTrip.push(data) 
                 }
-        })      
+        },
+        function error(err) {
+            console.error(`ERROR(${err.code}): ${err.message}`);
+          },
+          {
+            enableHighAccuracy: true,
+          })      
 
 
 
@@ -118,6 +125,9 @@ function Coord (){
     }
 
     function Endtrip() {
+        wakeLock.release().then(() => {
+            wakeLock = null;
+          });
         navigator.geolocation.clearWatch(watchID)
         let final = {
             "trip" : ListWithTheUserTrip,

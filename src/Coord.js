@@ -6,11 +6,11 @@ var ListWithTheUserTrip = []
 var DeviceID = CheckUserID()
 //TODO: Mostrar na app os valores que estão a ser lidos  (done)
 //TODO: Ver como obter um identificador universal(UUID) (done)
-//TODO: Ver como guardar UUID no storage interno
+//TODO: Ver como guardar UUID no storage interno (done)
 //TODO: Ver como impedir o ecrã de se desligar
+//TODO: Integrar com a cloud
 //TODO: Separar este projeto em mais components
 //TODO: Ver como integrar o Node.js no meio disto tudo
-//TODO: Integrar com a cloud
 
 function CheckUserID() {
     let DeviceID = localStorage.getItem("DeviceID")
@@ -37,7 +37,21 @@ function Coord (){
     console.log("---------------------");
 
     
-
+    function distance(lat1,lon1,lat2,lon2) {
+        const R = 6371e3; // metres
+        const φ1 = lat1 * Math.PI/180; // φ, λ in radians
+        const φ2 = lat2 * Math.PI/180;
+        const Δφ = (lat2-lat1) * Math.PI/180;
+        const Δλ = (lon2-lon1) * Math.PI/180;
+    
+        const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+                Math.cos(φ1) * Math.cos(φ2) *
+                Math.sin(Δλ/2) * Math.sin(Δλ/2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    
+        const d = R * c; // in metres
+        return d
+    }
     function BeginTrip() {
         setCollecting(true)
         console.log("Teste watch",watchID);
@@ -48,8 +62,22 @@ function Coord (){
                 let latitude = position.coords.latitude
                 let longitude = position.coords.longitude
                 let speed = position.coords.speed
+                if (!speed) {
+                    speed = "speed not supported"
+                }
                 let time = new Date(position.timestamp).toLocaleString()
-                let data = [latitude,longitude,time]
+                let dist = 0
+                if (ListWithTheUserTrip.length !== 0) {
+                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1][0],ListWithTheUserTrip[ListWithTheUserTrip.length-1][1])
+                }
+                // let data = [latitude,longitude,dist,speed,time]
+                let data = {
+                    "latitude" : latitude,
+                    "longitude" : longitude,
+                    "speed" : speed,
+                    "dist" : dist,
+                    "timestamp" : time,
+                }
 
                 setLatitude(latitude)
                 setLongitude(longitude)
@@ -77,13 +105,13 @@ function Coord (){
         console.log("novo id",aux);
         newWatchID(aux)
     }
-    
+
     function Endtrip() {
         navigator.geolocation.clearWatch(watchID)
         let final = {
             "trip" : ListWithTheUserTrip,
             "tripID" : crypto.randomUUID(),
-            "DeviceID" : DeviceID
+            "DeviceID" : DeviceID,
         }
         // console.log("Tipo da lista",typeof ListWithTheUserTrip);
         setlist(final)
@@ -99,7 +127,7 @@ function Coord (){
         
         // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
         if (lista.length !== 0) {
-            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
+            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["latitude"]}{"   "}{ponto["longitude"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
             data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
             data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
             return data

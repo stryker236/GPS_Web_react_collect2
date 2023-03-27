@@ -17,7 +17,7 @@ function CheckUserID() {
     if(!DeviceID){
         localStorage.setItem("DeviceID",crypto.randomUUID())
     }
-    console.log(DeviceID);
+    console.log("DeviceID: ",DeviceID);
     return DeviceID
 }
 function Coord (){
@@ -27,13 +27,14 @@ function Coord (){
     const [latitude,setLatitude] = useState(null)
     const [longitude,setLongitude] = useState(null)
     const [speed,setSpeed] = useState(null)
+    const [distance,setDistance] = useState(null)
     const [time,setTime] = useState(null)
     
     console.log("info")
-    console.log("WatchID",watchID)
-    console.log("Está em trip",colleting)
-    console.log("Tamanho da lista",lista.length)
-    console.log("Lista em si",lista)
+    // console.log("WatchID",watchID)
+    console.log("Collecting coord",colleting)
+    // console.log("Tamanho da lista",lista.length)
+    // console.log("Lista em si",lista)
     console.log("---------------------");
 
     
@@ -54,7 +55,7 @@ function Coord (){
     }
     function BeginTrip() {
         setCollecting(true)
-        console.log("Teste watch",watchID);
+        // console.log("Teste watch",watchID);
         
         let aux = navigator.geolocation.watchPosition(        
             function success(position) {
@@ -83,6 +84,7 @@ function Coord (){
                 setLongitude(longitude)
                 setSpeed(speed)
                 setTime(time)
+                setDistance(dist)
 
                 if(ListWithTheUserTrip.length !== 0){
                   if (JSON.stringify(ListWithTheUserTrip[ListWithTheUserTrip.length-1]) !== JSON.stringify(data)) {
@@ -122,7 +124,7 @@ function Coord (){
     }
 
     function TripInfo() {
-        console.log("Lista no trip info",lista);
+        // console.log("Lista no trip info",lista);
         // console.log("Tipo da lista",lista["trip"][0]);
         
         // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
@@ -163,6 +165,7 @@ function Coord (){
             </div>
             <div>
                 <div>distance</div>
+                <div>{distance}</div>
             </div>
             <div>
                 <div>time</div>

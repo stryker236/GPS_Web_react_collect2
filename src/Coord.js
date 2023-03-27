@@ -3,14 +3,23 @@ import { Button } from "@mui/material";
 
 
 var ListWithTheUserTrip = []
-console.log("Novo id",crypto.randomUUID()); 
+var DeviceID = CheckUserID()
 //TODO: Mostrar na app os valores que estão a ser lidos  (done)
-//TODO: Ver como integrar o Node.js no meio disto tudo
-//TODO: Ver como obter um identificador universal(UUID)
+//TODO: Ver como obter um identificador universal(UUID) (done)
 //TODO: Ver como guardar UUID no storage interno
-//TODO: Integrar com a cloud
 //TODO: Ver como impedir o ecrã de se desligar
+//TODO: Separar este projeto em mais components
+//TODO: Ver como integrar o Node.js no meio disto tudo
+//TODO: Integrar com a cloud
 
+function CheckUserID() {
+    let DeviceID = localStorage.getItem("DeviceID")
+    if(!DeviceID){
+        localStorage.setItem("DeviceID",crypto.randomUUID())
+    }
+    console.log(DeviceID);
+    return DeviceID
+}
 function Coord (){
     const [lista,setlist] = useState([])
     const [colleting,setCollecting] = useState(false)
@@ -18,7 +27,7 @@ function Coord (){
     const [latitude,setLatitude] = useState(null)
     const [longitude,setLongitude] = useState(null)
     const [speed,setSpeed] = useState(null)
-    // const [time,setTime] = useState(null)
+    const [time,setTime] = useState(null)
     
     console.log("info")
     console.log("WatchID",watchID)
@@ -28,7 +37,7 @@ function Coord (){
     console.log("---------------------");
 
     
-    
+
     function BeginTrip() {
         setCollecting(true)
         console.log("Teste watch",watchID);
@@ -45,6 +54,7 @@ function Coord (){
                 setLatitude(latitude)
                 setLongitude(longitude)
                 setSpeed(speed)
+                setTime(time)
 
                 if(ListWithTheUserTrip.length !== 0){
                   if (JSON.stringify(ListWithTheUserTrip[ListWithTheUserTrip.length-1]) !== JSON.stringify(data)) {
@@ -70,8 +80,14 @@ function Coord (){
     
     function Endtrip() {
         navigator.geolocation.clearWatch(watchID)
-        setlist(ListWithTheUserTrip)
-        console.log("viagem final:",ListWithTheUserTrip);
+        let final = {
+            "trip" : ListWithTheUserTrip,
+            "tripID" : crypto.randomUUID(),
+            "DeviceID" : DeviceID
+        }
+        // console.log("Tipo da lista",typeof ListWithTheUserTrip);
+        setlist(final)
+        // console.log("viagem final:",ListWithTheUserTrip);
         ListWithTheUserTrip = []
         setCollecting(false)
         //aqui deve chamar uma função para apanhar
@@ -79,8 +95,16 @@ function Coord (){
 
     function TripInfo() {
         console.log("Lista no trip info",lista);
-        let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
-        return data
+        // console.log("Tipo da lista",lista["trip"][0]);
+        
+        // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
+        if (lista.length !== 0) {
+            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
+            data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
+            data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
+            return data
+            
+        }
     }
 
 
@@ -114,6 +138,7 @@ function Coord (){
             </div>
             <div>
                 <div>time</div>
+                <div>{time}</div>
             </div>
             <RenderButton />
             <p/>

@@ -51,6 +51,13 @@ function Coord (){
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
     
         const d = R * c; // in metres
+        // console.log("φ1: calculada: ", φ1);
+        // console.log("φ2: calculada: ", φ2);
+        // console.log("a: calculada: ", a);
+        // console.log("a: calculada: ", a);
+        // console.log("c: calculada: ", c);
+        // console.log("diatancia calculada: ", d);
+        // console.log("diatancia calculada: ", d);
         return d
     }
     function BeginTrip() {
@@ -59,17 +66,19 @@ function Coord (){
         
         let aux = navigator.geolocation.watchPosition(        
             function success(position) {
-                console.log("Lista no Sucess",ListWithTheUserTrip)
+                // console.log("Lista no Sucess",ListWithTheUserTrip)
                 let latitude = position.coords.latitude
                 let longitude = position.coords.longitude
                 let speed = position.coords.speed
                 if (!speed) {
-                    speed = "speed not supported"
+                    speed = 0
                 }
                 let time = new Date(position.timestamp).toLocaleString()
                 let dist = 0
                 if (ListWithTheUserTrip.length !== 0) {
-                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1][0],ListWithTheUserTrip[ListWithTheUserTrip.length-1][1])
+                    // console.log("Tamanho da lista antes do calculo",ListWithTheUserTrip.length);
+                    // console.log("Lista durante  o calculo",ListWithTheUserTrip);
+                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1]["latitude"],ListWithTheUserTrip[ListWithTheUserTrip.length-1]["longitude"])
                 }
                 // let data = [latitude,longitude,dist,speed,time]
                 let data = {

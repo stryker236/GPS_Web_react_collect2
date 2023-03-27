@@ -27,7 +27,7 @@ function Coord (){
     const [latitude,setLatitude] = useState(null)
     const [longitude,setLongitude] = useState(null)
     const [speed,setSpeed] = useState(null)
-    const [distance,setDistance] = useState(null)
+    const [dist,setDistance] = useState(null)
     const [time,setTime] = useState(null)
     
     console.log("info")
@@ -165,7 +165,7 @@ function Coord (){
             </div>
             <div>
                 <div>distance</div>
-                <div>{distance}</div>
+                <div>{dist}</div>
             </div>
             <div>
                 <div>time</div>

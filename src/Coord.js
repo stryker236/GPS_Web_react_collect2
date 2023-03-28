@@ -61,6 +61,22 @@ function Coord (){
         // console.log("diatancia calculada: ", d);
         return d
     }
+    function postExample(data) {
+        console.log("data:",data);
+        fetch("http://localhost:3000/", {
+            method: "POST", 
+            headers: {
+                'accept': 'application/json',
+                'content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                // message : "asdas"
+                message : data
+            })
+          }).then(res => {
+            console.log("Request complete! response:", res)
+          });
+    }
     async function BeginTrip() {
         wakeLock = await navigator.wakeLock.request("screen");
         setCollecting(true)
@@ -80,12 +96,12 @@ function Coord (){
                 if (ListWithTheUserTrip.length !== 0) {
                     // console.log("Tamanho da lista antes do calculo",ListWithTheUserTrip.length);
                     // console.log("Lista durante  o calculo",ListWithTheUserTrip);
-                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1]["latitude"],ListWithTheUserTrip[ListWithTheUserTrip.length-1]["longitude"])
+                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1]["lat"],ListWithTheUserTrip[ListWithTheUserTrip.length-1]["long"])
                 }
                 // let data = [latitude,longitude,dist,speed,time]
                 let data = {
-                    "latitude" : latitude,
-                    "longitude" : longitude,
+                    "lat" : latitude,
+                    "long" : longitude,
                     "speed" : speed,
                     "dist" : dist,
                     "timestamp" : time,
@@ -138,6 +154,7 @@ function Coord (){
         // console.log("Tipo da lista",typeof ListWithTheUserTrip);
         setlist(final)
         // console.log("viagem final:",ListWithTheUserTrip);
+        postExample(JSON.stringify(final))
         ListWithTheUserTrip = []
         setCollecting(false)
         //aqui deve chamar uma função para apanhar
@@ -149,7 +166,7 @@ function Coord (){
         
         // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
         if (lista.length !== 0) {
-            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["latitude"]}{"   "}{ponto["longitude"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
+            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["lat"]}{"   "}{ponto["long"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
             data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
             data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
             return data
@@ -192,6 +209,7 @@ function Coord (){
                 <div>{time}</div>
             </div>
             <RenderButton />
+            <Button variant='contained' color="primary" onClick={postExample}>Tete post</Button>
             <p/>
             <TripInfo/>
         </div>

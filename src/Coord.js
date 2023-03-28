@@ -7,10 +7,11 @@ var wakeLock = null
 //TODO: Mostrar na app os valores que estão a ser lidos  (done)
 //TODO: Ver como obter um identificador universal(UUID) (done)
 //TODO: Ver como guardar UUID no storage interno (done)
-//TODO: Ver como impedir o ecrã de se desligar
+//TODO: Ver como impedir o ecrã de se desligar (done)
 //TODO: Integrar com a cloud
-//TODO: Separar este projeto em mais components
 //TODO: Ver como integrar o Node.js no meio disto tudo
+//NOTA: tenho de descobrir como dar deply do Node server e como fazer com que este comsiga reveber os dados do server com o React
+//TODO: Separar este projeto em mais components
 
 function CheckUserID() {
     let DeviceID = localStorage.getItem("DeviceID")

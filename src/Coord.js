@@ -1,6 +1,7 @@
 import {useState} from "react";
 import { distance,PostRequest } from "./utilis";
 import RenderButton from "./RenderButton"
+import TripInfo from "./TripInfo";
 
 var ListWithTheUserTrip = []
 var DeviceID = CheckUserID()
@@ -32,12 +33,12 @@ function Coord (){
     const [dist,setDistance] = useState(null)
     const [time,setTime] = useState(null)
     
-    console.log("info")
+    // console.log("info")
     // console.log("WatchID",watchID)
-    console.log("Collecting coord",colleting)
+    // console.log("Collecting coord",colleting)
     // console.log("Tamanho da lista",lista.length)
     // console.log("Lista em si",lista)
-    console.log("---------------------");
+    // console.log("---------------------");
 
     
     async function BeginTrip() {
@@ -51,17 +52,18 @@ function Coord (){
                 let latitude = position.coords.latitude
                 let longitude = position.coords.longitude
                 let speed = position.coords.speed
+                // console.log("speed:",speed);
                 if (!speed) {
                     speed = 0
                 }
                 let time = new Date(position.timestamp).toLocaleString()
                 let dist = 0
+                let lastCoord = ListWithTheUserTrip[ListWithTheUserTrip.length-1]
+                console.log(lastCoord,ListWithTheUserTrip);
                 if (ListWithTheUserTrip.length !== 0) {
-                    // console.log("Tamanho da lista antes do calculo",ListWithTheUserTrip.length);
-                    // console.log("Lista durante  o calculo",ListWithTheUserTrip);
-                    dist = distance(latitude,longitude,ListWithTheUserTrip[ListWithTheUserTrip.length-1]["lat"],ListWithTheUserTrip[ListWithTheUserTrip.length-1]["long"])
+                    dist = distance(latitude,longitude,lastCoord["lat"],lastCoord["long"])
+                    
                 }
-                // let data = [latitude,longitude,dist,speed,time]
                 let data = {
                     "lat" : latitude,
                     "long" : longitude,
@@ -73,17 +75,24 @@ function Coord (){
                 setLatitude(latitude)
                 setLongitude(longitude)
                 setSpeed(speed)
-                setTime(time)
                 setDistance(dist)
-
+                setTime(time)
                 if(ListWithTheUserTrip.length !== 0){
-                  if (JSON.stringify(ListWithTheUserTrip[ListWithTheUserTrip.length-1]) !== JSON.stringify(data)) {
+                    if (lastCoord["lat"] !== data["lat"] ||
+                        lastCoord["long"] !== data["long"] ||
+                        lastCoord["speed"] !== data["speed"] ||
+                        lastCoord["timestamp"] !== data["timestamp"]
+                    ) {
                     ListWithTheUserTrip.push(data)  
-                  }
+                    }
                 }
                 else{
                     ListWithTheUserTrip.push(data) 
                 }
+                console.log(data,ListWithTheUserTrip[ListWithTheUserTrip.length-1]);
+
+                
+
         },
         function error(err) {
             console.error(`ERROR(${err.code}): ${err.message}`);
@@ -123,27 +132,17 @@ function Coord (){
         //aqui deve chamar uma função para apanhar
     }
 
-    function TripInfo() {
-        // console.log("Lista no trip info",lista);
-        // console.log("Tipo da lista",lista["trip"][0]);
+    // function TripInfo() {
+    //     // console.log("Lista no trip info",lista);
+    //     // console.log("Tipo da lista",lista["trip"][0]);
         
-        // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
-        if (lista.length !== 0) {
-            let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["lat"]}{"   "}{ponto["long"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
-            data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
-            data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
-            return data
+    //     // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
+    //     if (lista.length !== 0) {
+    //         let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["lat"]}{"   "}{ponto["long"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
+    //         data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
+    //         data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
+    //         return data
             
-        }
-    }
-
-
-    // function RenderButton() {
-    //     if(colleting === false){
-    //         return <Button variant='contained' color="primary" onClick={BeginTrip}>Iniciar Viagem</Button>
-    //     }
-    //     else{
-    //         return <Button variant='contained' color="primary" onClick={Endtrip}>Encerrar trip</Button>
     //     }
     // }
 
@@ -173,7 +172,7 @@ function Coord (){
             </div>
             <RenderButton BeginTrip={BeginTrip} Endtrip={Endtrip} colleting = {colleting} />
             <p/>
-            <TripInfo/>
+            <TripInfo lista={lista}/>
         </div>
         );
 }

@@ -6,7 +6,7 @@ import Coord from "./Coord"
 function App() {
   return (
     <div>
-      <Coord></Coord>
+      <Coord/>
     </div>
     );
 }

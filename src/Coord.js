@@ -1,5 +1,6 @@
 import {useState} from "react";
-import { Button } from "@mui/material";
+import { distance,PostRequest } from "./utilis";
+import RenderButton from "./RenderButton"
 
 var ListWithTheUserTrip = []
 var DeviceID = CheckUserID()
@@ -39,44 +40,6 @@ function Coord (){
     console.log("---------------------");
 
     
-    function distance(lat1,lon1,lat2,lon2) {
-        const R = 6371e3; // metres
-        const φ1 = lat1 * Math.PI/180; // φ, λ in radians
-        const φ2 = lat2 * Math.PI/180;
-        const Δφ = (lat2-lat1) * Math.PI/180;
-        const Δλ = (lon2-lon1) * Math.PI/180;
-    
-        const a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
-                Math.cos(φ1) * Math.cos(φ2) *
-                Math.sin(Δλ/2) * Math.sin(Δλ/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    
-        const d = R * c; // in metres
-        // console.log("φ1: calculada: ", φ1);
-        // console.log("φ2: calculada: ", φ2);
-        // console.log("a: calculada: ", a);
-        // console.log("a: calculada: ", a);
-        // console.log("c: calculada: ", c);
-        // console.log("diatancia calculada: ", d);
-        // console.log("diatancia calculada: ", d);
-        return d
-    }
-    function postExample(data) {
-        console.log("data:",data);
-        fetch("http://localhost:3000/", {
-            method: "POST", 
-            headers: {
-                'accept': 'application/json',
-                'content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                // message : "asdas"
-                message : data
-            })
-          }).then(res => {
-            console.log("Request complete! response:", res)
-          });
-    }
     async function BeginTrip() {
         wakeLock = await navigator.wakeLock.request("screen");
         setCollecting(true)
@@ -154,7 +117,7 @@ function Coord (){
         // console.log("Tipo da lista",typeof ListWithTheUserTrip);
         setlist(final)
         // console.log("viagem final:",ListWithTheUserTrip);
-        postExample(JSON.stringify(final))
+        PostRequest(JSON.stringify(final))
         ListWithTheUserTrip = []
         setCollecting(false)
         //aqui deve chamar uma função para apanhar
@@ -175,14 +138,14 @@ function Coord (){
     }
 
 
-    function RenderButton() {
-        if(colleting === false){
-            return <Button variant='contained' color="primary" onClick={BeginTrip}>Iniciar Viagem</Button>
-        }
-        else{
-            return <Button variant='contained' color="primary" onClick={Endtrip}>Encerrar trip</Button>
-        }
-    }
+    // function RenderButton() {
+    //     if(colleting === false){
+    //         return <Button variant='contained' color="primary" onClick={BeginTrip}>Iniciar Viagem</Button>
+    //     }
+    //     else{
+    //         return <Button variant='contained' color="primary" onClick={Endtrip}>Encerrar trip</Button>
+    //     }
+    // }
 
 
 
@@ -208,8 +171,7 @@ function Coord (){
                 <div>time</div>
                 <div>{time}</div>
             </div>
-            <RenderButton />
-            {/* <Button variant='contained' color="primary" onClick={postExample}>Tete post</Button> */}
+            <RenderButton BeginTrip={BeginTrip} Endtrip={Endtrip} colleting = {colleting} />
             <p/>
             <TripInfo/>
         </div>

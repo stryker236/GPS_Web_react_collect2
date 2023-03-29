@@ -209,7 +209,7 @@ function Coord (){
                 <div>{time}</div>
             </div>
             <RenderButton />
-            <Button variant='contained' color="primary" onClick={postExample}>Tete post</Button>
+            {/* <Button variant='contained' color="primary" onClick={postExample}>Tete post</Button> */}
             <p/>
             <TripInfo/>
         </div>

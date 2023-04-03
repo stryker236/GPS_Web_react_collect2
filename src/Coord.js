@@ -3,9 +3,13 @@ import { distance,PostRequest } from "./utilis";
 import RenderButton from "./RenderButton"
 import TripInfo from "./TripInfo";
 
+
+
+
 var ListWithTheUserTrip = []
 var DeviceID = CheckUserID()
 var wakeLock = null
+
 //TODO: Mostrar na app os valores que estão a ser lidos  (done)
 //TODO: Ver como obter um identificador universal(UUID) (done)
 //TODO: Ver como guardar UUID no storage interno (done)
@@ -23,6 +27,7 @@ function CheckUserID() {
     console.log("DeviceID: ",DeviceID);
     return DeviceID
 }
+
 function Coord (){
     const [lista,setlist] = useState([])
     const [colleting,setCollecting] = useState(false)
@@ -131,21 +136,6 @@ function Coord (){
         setCollecting(false)
         //aqui deve chamar uma função para apanhar
     }
-
-    // function TripInfo() {
-    //     // console.log("Lista no trip info",lista);
-    //     // console.log("Tipo da lista",lista["trip"][0]);
-        
-    //     // let data = lista.map((ponto) => <div>{ponto[0]}{"   "}{ponto[1]}{"   "}{ponto[2]}</div>)
-    //     if (lista.length !== 0) {
-    //         let data = lista["trip"].map((ponto,i) => <div key={i}>{ponto["lat"]}{"   "}{ponto["long"]}{"   "}{ponto["speed"]}{"   "}{ponto["dist"]}{"   "}{ponto["timestamp"]}</div>)
-    //         data.push(<div key={"a"}>DeviceID: {lista["DeviceID"]}</div>)
-    //         data.push(<div key={"b"}>TripID: {lista["tripID"]}</div>)
-    //         return data
-            
-    //     }
-    // }
-
 
 
     return(

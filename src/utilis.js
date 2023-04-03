@@ -1,3 +1,5 @@
+let cloudFunction = "https://us-central1-projectbk2-71159.cloudfunctions.net/function-2"
+
 function distance(lat1,lon1,lat2,lon2) {
     const R = 6371e3; // metres
     const φ1 = lat1 * Math.PI/180; // φ, λ in radians
@@ -16,14 +18,13 @@ function distance(lat1,lon1,lat2,lon2) {
 
 function PostRequest(data) {
     console.log("data:",data);
-    fetch("http://localhost:3000/", {
+    fetch(cloudFunction, {
         method: "POST", 
         headers: {
             'accept': 'application/json',
             'content-Type': 'application/json',
         },
         body: JSON.stringify({
-            // message : "asdas"
             message : data
         })
       }).then(res => {

@@ -2,6 +2,7 @@ import {useState} from "react";
 import { distance,PostRequest } from "./utilis";
 import RenderButton from "./RenderButton"
 import TripInfo from "./TripInfo";
+const cors = require('cors');
 
 
 

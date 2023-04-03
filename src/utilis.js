@@ -19,7 +19,7 @@ function distance(lat1,lon1,lat2,lon2) {
 function PostRequest(data) {
     console.log("data:",data);
     fetch(cloudFunction, {
-        mode : "cors",
+        mode : "no-cors",
         method: "POST", 
         headers: {
             'accept': 'application/json',

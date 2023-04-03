@@ -1,3 +1,5 @@
+
+
 let cloudFunction = "https://us-central1-projectbk2-71159.cloudfunctions.net/function-2"
 
 function distance(lat1,lon1,lat2,lon2) {
@@ -19,7 +21,8 @@ function distance(lat1,lon1,lat2,lon2) {
 function PostRequest(data) {
     console.log("data:",data);
     fetch(cloudFunction, {
-        mode : "no-cors",
+        mode : "cors",
+        // mode : "no-cors",
         method: "POST", 
         headers: {
             'accept': 'application/json',

@@ -22,7 +22,7 @@ function PostRequest(data) {
     console.log("data:",data);
     fetch(cloudFunction, {
         // mode : "cors",
-        // mode : "no-cors",
+        mode : "no-cors",
         method: "POST", 
         headers: {
             'accept': 'application/json',

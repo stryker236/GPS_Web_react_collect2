@@ -33,7 +33,7 @@ function PostRequest(data) {
         })
       }).then(res => {
         console.log("Request complete! response:", res)
-      });
+      }).catch(err => console.err(err));
 }
 
 export {distance,PostRequest}

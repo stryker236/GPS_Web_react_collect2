@@ -20,20 +20,18 @@ function distance(lat1,lon1,lat2,lon2) {
 
 function PostRequest(data) {
     console.log("data:",data);
+    console.log("estou atualizado");
     fetch(cloudFunction, {
-        // mode : "cors",
-        mode : "no-cors",
         method: "POST", 
         headers: {
-            'accept': 'application/json',
-            'content-Type': 'application/json',
+            'content-Type': 'application/json'
         },
         body: JSON.stringify({
             message : data
         })
       }).then(res => {
         console.log("Request complete! response:", res)
-      }).catch(err => console.err(err));
+      }).catch(err => console.error(err));
 }
 
 export {distance,PostRequest}
